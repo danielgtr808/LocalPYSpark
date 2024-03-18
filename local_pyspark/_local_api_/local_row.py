@@ -1,7 +1,11 @@
+from __future__ import annotations
 from types import *
-from typing import Dict, Union
+from typing import Dict, TYPE_CHECKING, Union
 
-type LocalRowData = Dict["LocalColumn", Union[float, int, str]]
+if TYPE_CHECKING:
+    from .local_column import LocalColumn
+
+type LocalRowData = Dict[LocalColumn, Union[float, int, str]]
 
 
 
@@ -14,7 +18,7 @@ class LocalRow():
     def data(self) -> LocalRowData:
         return self._data
     
-    def add(self, column: "LocalColumn", data: Union[float, int, str]) -> None:
+    def add(self, column: LocalColumn, data: Union[float, int, str]) -> None:
         self._data[column] = data
 
     def clone(self) -> "LocalRow":
@@ -28,11 +32,11 @@ class LocalRow():
             }
         )
 
-    def remove(self, column: "LocalColumn") -> None:
+    def remove(self, column: LocalColumn) -> None:
         try:
             del self._data[column]
         except KeyError:
             return
 
-    def __getitem__(self, key: "LocalColumn") -> Union[float, int, str]:
+    def __getitem__(self, key: LocalColumn) -> Union[float, int, str]:
         return self.data[key]
