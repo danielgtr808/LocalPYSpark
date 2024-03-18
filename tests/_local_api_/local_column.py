@@ -16,6 +16,7 @@ class TestLocalColumn(unittest.TestCase):
             lapi.LocalRow({ columns[0]: 2, columns[1]: "Karen", columns[2]: 1 })
         ]
 
+        # (Active == 1) and (name == "Karen")
         conditional = columns[2].equal_to(1).and_(columns[1].equal_to("Karen"))
         self.assertEqual(conditional(rows[0]), False)
         self.assertEqual(conditional(rows[1]), True)
@@ -37,7 +38,6 @@ class TestLocalColumn(unittest.TestCase):
         row = lapi.LocalRow({ column: 1 })
 
         self.assertEqual(column.as_("another name")(row), 1)
-
 
 
 

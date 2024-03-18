@@ -1,13 +1,27 @@
 from .local_row import LocalRow
+from statistics import mean
 from typing import Any, List, Literal, Optional, TypedDict, Union
 
 import operator
 
-type ColumnTypes = Literal["alias", "arithmetic", "comparison", "logical", "ordering"]
+type ColumnTypes = Literal["aggregation", "alias", "arithmetic", "comparison", "logical", "ordering"]
 type ColumnOperators = Union[BinaryOperator, None, UnaryOperator]
 type OperandType = List[Union[LiteralType, LocalColumn]]
 type LiteralType = Union[float, int, str]
 
+
+class AggregationOperator():
+
+    def __call__(self, rows_to_agg: List[LocalRow]) -> Any:
+        return self.operator(map(
+            lambda x:
+            x[self.column],
+            rows_to_agg
+        ))
+
+    def __init__(self, column, operator) -> None:
+        self.column = column
+        self.operator = operator
    
 class BinaryOperator():
 
@@ -95,7 +109,17 @@ class LocalColumn():
                 "type": "alias"
             }
         )
-    
+  
+    def avg(self) -> "LocalColumn":        
+        return LocalColumn(
+            self,
+            {
+                "name": f"avg({self})",
+                "operator": AggregationOperator(self, mean),
+                "type": "aggregation"
+            }
+        )
+      
     def divide(self, other: Union[LiteralType, "LocalColumn"]) -> "LocalColumn":
         return LocalColumn(
             self,
@@ -113,6 +137,26 @@ class LocalColumn():
                 "name": f"({self} = {other})",
                 "operator": BinaryOperator(self, other, operator.eq),
                 "type": "comparison"
+            }
+        )
+    
+    def max(self) -> "LocalColumn":        
+        return LocalColumn(
+            self,
+            {
+                "name": f"max({self})",
+                "operator": AggregationOperator(self, max),
+                "type": "aggregation"
+            }
+        )
+
+    def min(self) -> "LocalColumn":        
+        return LocalColumn(
+            self,
+            {
+                "name": f"min({self})",
+                "operator": AggregationOperator(self, min),
+                "type": "aggregation"
             }
         )
     

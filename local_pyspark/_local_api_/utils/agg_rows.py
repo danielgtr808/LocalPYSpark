@@ -1,9 +1,9 @@
 from ..local_column import LocalColumn
 from ..local_row import LocalRow
-from typing import Dict, List
+from typing import Dict, List, Union
 
 
-def agg_rows(columns: List[LocalColumn], agg: List[LocalColumn], grouped_data):
+def agg_rows(columns: List[LocalColumn], agg: List[LocalColumn], grouped_data: Union[Dict, List[LocalRow]]):
     if (isinstance(grouped_data, Dict)):
         agg_data: List[LocalRow] = []
 

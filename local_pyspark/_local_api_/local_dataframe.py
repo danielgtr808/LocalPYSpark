@@ -1,7 +1,7 @@
 from .local_column import LocalColumn
 from .local_grouped_data import LocalGroupedData
 from .local_row import LocalRow
-from .utils import ColumnType, group_rows, order_rows, map_column_to_local_column
+from .utils import ColumnType, group_rows, map_column_to_local_column, order_rows
 from ..sql.column import Column
 from typing import Callable, List
 
@@ -14,7 +14,7 @@ class LocalDataframe():
     def __init__(self, data_callback: DataCallback) -> None:
         self.data_callback = data_callback
 
-    def groupBy(self, *cols: ColumnType) -> "LocalDataframe":
+    def groupBy(self, *cols: ColumnType) -> LocalGroupedData:
         _columns: List[LocalColumn] = map_column_to_local_column(list(cols))
         
         return LocalGroupedData(
