@@ -140,6 +140,46 @@ class LocalColumn():
             }
         )
     
+    def ge(self, other: Union[LiteralType, "LocalColumn"]) -> "LocalColumn":
+        return LocalColumn(
+            self,
+            {
+                "name": f"({self} >= {other})",
+                "operator": BinaryOperator(self, other, operator.ge),
+                "type": "comparison"
+            }
+        )
+    
+    def gt(self, other: Union[LiteralType, "LocalColumn"]) -> "LocalColumn":
+        return LocalColumn(
+            self,
+            {
+                "name": f"({self} > {other})",
+                "operator": BinaryOperator(self, other, operator.gt),
+                "type": "comparison"
+            }
+        )
+    
+    def le(self, other: Union[LiteralType, "LocalColumn"]) -> "LocalColumn":
+        return LocalColumn(
+            self,
+            {
+                "name": f"({self} <= {other})",
+                "operator": BinaryOperator(self, other, operator.le),
+                "type": "comparison"
+            }
+        )
+    
+    def lt(self, other: Union[LiteralType, "LocalColumn"]) -> "LocalColumn":
+        return LocalColumn(
+            self,
+            {
+                "name": f"({self} < {other})",
+                "operator": BinaryOperator(self, other, operator.lt),
+                "type": "comparison"
+            }
+        )
+    
     def max(self) -> "LocalColumn":        
         return LocalColumn(
             self,
@@ -232,3 +272,6 @@ class LocalColumn():
 
     def __str__(self) -> str:
         return self.name
+    
+
+operator.ge

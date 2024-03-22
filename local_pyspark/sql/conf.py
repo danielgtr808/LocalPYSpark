@@ -15,13 +15,15 @@ class RuntimeConfig():
         self._options: Dict[str, Any] = options
 
     def get(self, key: str, default: Any = None) -> Any:
-        if ((key not in self._options.keys()) and default is not None):
+        if (key in self._options.keys()):
+            return self._options[key]
+        elif (default is not None):
             self.set(key, default)
             return default
-        elif (default is None):
-            raise Exception(f"The SQL config \"{key}\" cannot be found...")
         
-        return self._options[key]
+        raise Exception(f"The SQL config \"{key}\" cannot be found...")
+        
+        
     
     def getAll(self) -> Dict[str, Any]:
         return self._options
